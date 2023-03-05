@@ -160,19 +160,16 @@ const editBookByIdHandler = (request, h) => {
 const deleteBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
 
-  const book = books.filter((n) => n.id === bookId)[0];
   const index = books.findIndex((book) => book.id === bookId);
 
-  if (book !== undefined) {
-    if (index !== -1) {
-      books.splice(index, 1);
-      const response = h.response({
-        status: 'success',
-        message: 'Buku berhasil dihapus',
-      });
-      response.code(200);
-      return response;
-    }
+  if (index !== -1) {
+    books.splice(index, 1);
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    });
+    response.code(200);
+    return response;
   }
   const response = h.response({
     status: 'fail',
