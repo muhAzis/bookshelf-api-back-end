@@ -56,7 +56,15 @@ const addBookHandler = (request, h) => {
 };
 
 const getBooksHandler = (request, h) => {
-  const allBooks = books;
+  const { name, reading, finished } = request.query;
+  let allBooks = books;
+  if (finished !== undefined) {
+    allBooks = books.filter((book) => book.finished === (finished === '1'));
+  } else if (reading !== undefined) {
+    allBooks = books.filter((book) => book.reading === (reading === true));
+  } else if (name !== undefined) {
+    allBooks = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+  }
 
   if (allBooks.length === 0) {
     const response = h.response({
@@ -94,7 +102,7 @@ const getBookByIdHandler = (request, h) => {
       },
     };
   }
-  const response = h.reponse({
+  const response = h.response({
     status: 'fail',
     message: 'Buku tidak ditemukan',
   });
